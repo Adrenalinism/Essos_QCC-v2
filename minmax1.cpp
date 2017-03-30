@@ -8,39 +8,25 @@
  * This software is provided "as is" without express or implied
  * warranty, and with no claim as to its suitability for any purpose.
  */
-#include <cstdlib>
-#include "algostuff.hpp"
+#include <algorithm>
 using namespace std;
 
-bool absLess (int elem1, int elem2)
+/* function that compares two pointers by comparing the values to which they point
+ */
+bool int_ptr_less (int* a, int* b)
 {
-    return abs(elem1) < abs(elem2);
+    return *a < *b;
 }
 
 int main()
 {
-    deque<int> coll;
+    int x = 17;
+    int y = 42;
+    int* px = &x;
+    int* py = &y;
+    int* pmax;
 
-    INSERT_ELEMENTS(coll,2,8);
-    INSERT_ELEMENTS(coll,-3,5);
-
-    PRINT_ELEMENTS(coll);
-
-    // process and print minimum and maximum
-    cout << "minimum: "
-         << *min_element(coll.begin(),coll.end())
-         << endl;
-    cout << "maximum: "
-         << *max_element(coll.begin(),coll.end())
-         << endl;
-
-    // process and print minimum and maximum of absolute values
-    cout << "minimum of absolute values: "
-         << *min_element(coll.begin(),coll.end(),
-                         absLess)
-         << endl;
-    cout << "maximum of absolute values: "
-         << *max_element(coll.begin(),coll.end(),
-                         absLess)
-         << endl;
+    // call max() with special comparison function
+    pmax = max (px, py, int_ptr_less);
+    //...
 }

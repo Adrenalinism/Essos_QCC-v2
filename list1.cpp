@@ -9,24 +9,25 @@
  * warranty, and with no claim as to its suitability for any purpose.
  */
 #include <iostream>
-#include <vector>
 #include <list>
-#include <algorithm>
 using namespace std;
 
 int main()
 {
-    list<int>   coll1;
-    vector<int> coll2;
+    list<char> coll;      // list container for character elements
 
-    // insert elements from 1 to 9
-    for (int i=1; i<=9; ++i) {
-        coll1.push_back(i);
+    // append elements from 'a' to 'z'
+    for (char c='a'; c<='z'; ++c) {
+        coll.push_back(c);
     }
 
-    // RUNTIME ERROR:
-    // - overwrites nonexisting elements in the destination
-    copy (coll1.begin(), coll1.end(),     // source
-          coll2.begin());                 // destination
-    //...
+    /* print all elements
+     * - while there are elements
+     * - print and remove the first element
+     */
+    while (! coll.empty()) {
+        cout << coll.front() << ' ';
+        coll.pop_front();
+    }
+    cout << endl;
 }

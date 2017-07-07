@@ -8,22 +8,16 @@
  * This software is provided "as is" without express or implied
  * warranty, and with no claim as to its suitability for any purpose.
  */
-#include "algostuff.hpp"
+#include <iostream>
+#include <vector>
+#include <algorithm>
 using namespace std;
 
-// function object that adds the value with which it is initialized
-template <class T>
-class AddValue {
-  private:
-    T theValue;    // value to add
+// simple function object that prints the passed argument
+class PrintInt {
   public:
-    // constructor initializes the value to add
-    AddValue (const T& v) : theValue(v) {
-    }
-
-    // the function call for the element adds the value
-    void operator() (T& elem) const {
-        elem += theValue;
+    void operator() (int elem) const {
+        cout << elem << ' ';
     }
 };
 
@@ -31,15 +25,13 @@ int main()
 {
     vector<int> coll;
 
-    INSERT_ELEMENTS(coll,1,9);
+    // insert elements from 1 to 9
+    for (int i=1; i<=9; ++i) {
+        coll.push_back(i);
+    }
 
-    // add ten to each element
-    for_each (coll.begin(), coll.end(),       // range
-              AddValue<int>(10));             // operation
-    PRINT_ELEMENTS(coll);
-
-    // add value of first element to each element
-    for_each (coll.begin(), coll.end(),       // range
-              AddValue<int>(*coll.begin()));  // operation
-    PRINT_ELEMENTS(coll);
+    // print all elements
+    for_each (coll.begin(), coll.end(),    // range
+              PrintInt());                 // operation
+    cout << endl;
 }

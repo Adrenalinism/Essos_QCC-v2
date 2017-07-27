@@ -11,32 +11,55 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <iomanip>
 using namespace std;
 
 int main()
 {
-    // type of the collection
-    typedef multimap<int,string> IntStringMMap;
+    // define multimap type as string/string dictionary
+    typedef multimap<string,string> StrStrMMap;
 
-    IntStringMMap coll;        // container for int/string values
+    // create empty dictionary
+    StrStrMMap dict;
 
-    // insert some elements in arbitrary order
-    // - a value with key 1 gets inserted twice
-    coll.insert(make_pair(5,"tagged"));
-    coll.insert(make_pair(2,"a"));
-    coll.insert(make_pair(1,"this"));
-    coll.insert(make_pair(4,"of"));
-    coll.insert(make_pair(6,"strings"));
-    coll.insert(make_pair(1,"is"));
-    coll.insert(make_pair(3,"multimap"));
+    // insert some elements in random order
+    dict.insert(make_pair("day","Tag"));
+    dict.insert(make_pair("strange","fremd"));
+    dict.insert(make_pair("car","Auto"));
+    dict.insert(make_pair("smart","elegant"));
+    dict.insert(make_pair("trait","Merkmal"));
+    dict.insert(make_pair("strange","seltsam"));
+    dict.insert(make_pair("smart","raffiniert"));
+    dict.insert(make_pair("smart","klug"));
+    dict.insert(make_pair("clever","raffiniert"));
 
-    /* print all element values
-     * - iterate over all elements
-     * - element member second is the value
-     */
-    IntStringMMap::iterator pos;
-    for (pos = coll.begin(); pos != coll.end(); ++pos) {
-        cout << pos->second << ' ';
+    // print all elements
+    StrStrMMap::iterator pos;
+    cout.setf (ios::left, ios::adjustfield);
+    cout << ' ' << setw(10) << "english "
+         << "german " << endl;
+    cout << setfill('-') << setw(20) << ""
+         << setfill(' ') << endl;
+    for (pos = dict.begin(); pos != dict.end(); ++pos) {
+        cout << ' ' << setw(10) << pos->first.c_str()
+             << pos->second << endl;
     }
     cout << endl;
+
+    // print all values for key "smart"
+    string word("smart");
+    cout << word << ": " << endl;
+    for (pos = dict.lower_bound(word);
+         pos != dict.upper_bound(word); ++pos) {
+            cout << "    " << pos->second << endl;
+    }
+
+    // print all keys for value "raffiniert"
+    word = ("raffiniert");
+    cout << word << ": " << endl;
+    for (pos = dict.begin(); pos != dict.end(); ++pos) {
+        if (pos->second == word) {
+            cout << "    " << pos->first << endl;
+        }
+    }
 }

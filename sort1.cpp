@@ -48,23 +48,25 @@ ostream& operator<< (ostream& s, const Person& p)
 }
 
 
-/* binary function predicate:
- * - returns whether a person is less than another person
+/* class for function predicate
+ * - operator () returns whether a person is less than another person
  */
-bool personSortCriterion (const Person& p1, const Person& p2)
-{
-    /* a person is less than another person
-     * - if the last name is less
-     * - if the last name is equal and the first name is less
-     */
-    return p1.lastname()<p2.lastname() ||
-           (p1.lastname()==p2.lastname() &&
-            p1.firstname()<p2.firstname());
-}
+class PersonSortCriterion {
+  public:
+    bool operator() (const Person& p1, const Person& p2) const {
+        /* a person is less than another person
+         * - if the last name is less
+         * - if the last name is equal and the first name is less
+         */
+        return p1.lastname()<p2.lastname() ||
+               (p1.lastname()==p2.lastname() &&
+                p1.firstname()<p2.firstname());
+    }
+};
+
 
 int main()
 {
-    // create some persons
     Person p1("nicolai","josuttis");
     Person p2("ulli","josuttis");
     Person p3("anica","josuttis");
@@ -73,29 +75,23 @@ int main()
     Person p6("lucas","arm");
     Person p7("anica","holle");
     
-    // insert person into collection coll
-    deque<Person> coll;
-    coll.push_back(p1);
-    coll.push_back(p2);
-    coll.push_back(p3);
-    coll.push_back(p4);
-    coll.push_back(p5);
-    coll.push_back(p6);
-    coll.push_back(p7);
+    // declare set type with special sorting criterion
+    typedef set<Person,PersonSortCriterion> PersonSet;
 
-    // print elements
-    cout << "deque before sort():" << endl;
-    deque<Person>::iterator pos;
-    for (pos = coll.begin(); pos != coll.end(); ++pos) {
-        cout << *pos << endl;
-    }
+    // create such a collection
+    PersonSet coll;
+    coll.insert(p1);
+    coll.insert(p2);
+    coll.insert(p3);
+    coll.insert(p4);
+    coll.insert(p5);
+    coll.insert(p6);
+    coll.insert(p7);
 
-    // sort elements
-    sort(coll.begin(),coll.end(),    // range
-         personSortCriterion);       // sort criterion
-
-    // print elements
-    cout << "deque after sort():" << endl;
+    // do something with the elements
+    // - in this case: output them
+    cout << "set:" << endl;
+    PersonSet::iterator pos;
     for (pos = coll.begin(); pos != coll.end(); ++pos) {
         cout << *pos << endl;
     }

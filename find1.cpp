@@ -8,39 +8,44 @@
  * This software is provided "as is" without express or implied
  * warranty, and with no claim as to its suitability for any purpose.
  */
-#include "algostuff.hpp"
+#include <iostream>
+#include <list>
+#include <algorithm>
 using namespace std;
 
 int main()
 {
     list<int> coll;
+    list<int>::iterator pos;
 
-    INSERT_ELEMENTS(coll,1,9);
-    INSERT_ELEMENTS(coll,1,9);
-
-    PRINT_ELEMENTS(coll,"coll: ");
-
-    // find first element with value 4
-    list<int>::iterator pos1;
-    pos1 = find (coll.begin(), coll.end(),    // range
-                 4);                          // value
-
-    /* find second element with value 4
-     * - note: continue the search behind the first 4 (if any)
-     */
-    list<int>::iterator pos2;
-    if (pos1 != coll.end()) {
-        pos2 = find (++pos1, coll.end(),      // range
-                     4);                      // value
+    // insert elements from 20 to 40
+    for (int i=20; i<=40; ++i) {
+        coll.push_back(i);
     }
 
-    /* print all elements from first to second 4 (both included)
-     * - note: now we need the position of the first 4 again (if any)
-     * - note: we have to pass the position behind the second 4 (if any)
+    /* find position of element with value 3
+     * - there is none, so pos gets coll.end()
      */
-    if (pos1!=coll.end() && pos2!=coll.end()) {
-        copy (--pos1, ++pos2,
-              ostream_iterator<int>(cout," "));
-        cout << endl;
-    }
+    pos = find (coll.begin(), coll.end(),    // range
+                3);                          // value
+    
+    /* reverse the order of elements between found element and the end
+     * - because pos is coll.end() it reverses an empty range
+     */
+    reverse (pos, coll.end());
+
+    // find positions of values 25 and 35
+    list<int>::iterator pos25, pos35;
+    pos25 = find (coll.begin(), coll.end(),  // range
+                  25);                       // value
+    pos35 = find (coll.begin(), coll.end(),  // range
+                  35);                       // value
+
+    /* print the maximum of the corresponding range
+     * - note: including pos25 but excluding pos35
+     */
+    cout << "max: " << *max_element (pos25, pos35) << endl;
+
+    // process the elements including the last position
+    cout << "max: " << *max_element (pos25, ++pos35) << endl;
 }
